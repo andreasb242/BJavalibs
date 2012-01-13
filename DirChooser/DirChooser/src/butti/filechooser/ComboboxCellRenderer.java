@@ -20,10 +20,9 @@ import butti.filechooser.model.DirItem;
  * 
  */
 public class ComboboxCellRenderer implements ListCellRenderer {
-	private static final long serialVersionUID = 1L;
 
 	private JLabel empty = new JLabel();
-	
+
 	// Device
 	private JPanel panel;
 	private JLabel lbPath;

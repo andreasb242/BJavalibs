@@ -20,7 +20,6 @@ import butti.filechooser.model.DirItem;
  * 
  */
 public class FolderTreeCellRenderer implements TreeCellRenderer {
-	private static final long serialVersionUID = 1L;
 
 	private JLabel empty = new JLabel();
 
