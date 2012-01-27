@@ -159,6 +159,16 @@ public class Errorhandler {
 	 * @param e
 	 *            Die Exception
 	 */
+	public static void logError(Throwable e) {
+		logError(e, null);
+	}
+
+	/**
+	 * Logt eine Error in das Logfile
+	 * 
+	 * @param e
+	 *            Die Exception
+	 */
 	public static void logError(Throwable e, String message) {
 		StringBuilder error = new StringBuilder();
 

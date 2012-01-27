@@ -42,7 +42,7 @@ public class Settings {
 			Errorhandler.showError(e, "Einstellungen konnten nicht gespeichert werden!");
 		}
 	}
-
+	
 	/**
 	 * Gibt eine Einstellung zurück
 	 * 
@@ -91,6 +91,18 @@ public class Settings {
 	 * @param value
 	 *            Der Wert der Einstellung
 	 */
+	public void setSetting(String name, double value) {
+		setSetting(name, String.valueOf(value));
+	}
+
+	/**
+	 * Setzt eine Einstellung
+	 * 
+	 * @param name
+	 *            Der Name der Einstellung
+	 * @param value
+	 *            Der Wert der Einstellung
+	 */
 	public void setSetting(String name, String value) {
 		settings.setProperty(name, value);
 		save();
@@ -111,6 +123,23 @@ public class Settings {
 			return defaultValue;
 		}
 		return value;
+	}
+
+	/**
+	 * Gibt eine Einstellung zurück
+	 * 
+	 * @param name
+	 *            Der name der Einstellung
+	 * @param defaultValue
+	 *            Der Defaultwert
+	 * @return Der Wert der Einstellung
+	 */
+	public double getSetting(String name, double defaultValue) {
+		try {
+			return Double.parseDouble(settings.getProperty(name));
+		} catch(Exception e) {
+		}
+		return defaultValue;
 	}
 
 	/**
