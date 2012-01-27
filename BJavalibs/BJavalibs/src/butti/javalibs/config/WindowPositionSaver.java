@@ -40,7 +40,7 @@ public class WindowPositionSaver {
 	}
 
 	private File getFile() {
-		return new File(ConfigPath.getConfigPath() + name + ".windowPos");
+		return new File(ConfigPath.getSettingsPath() + name + ".windowPos");
 	}
 
 	public void load() {

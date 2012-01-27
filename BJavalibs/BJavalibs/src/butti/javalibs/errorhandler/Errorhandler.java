@@ -123,7 +123,7 @@ public class Errorhandler {
 						msg = msg.substring(0, 100) + "...";
 					}
 
-					message += "<i>" + msg + "</i>";
+					message += "<i>" + msg + "</i><br>";
 				}
 
 				message += "Der Fehler wurde geloggt. Bitte senden Sie das Logfile an den Entwickler.<br>" + "Logfile: " + logfilename + "</html>";

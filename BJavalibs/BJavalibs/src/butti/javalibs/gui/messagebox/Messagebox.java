@@ -46,10 +46,10 @@ public class Messagebox extends JEscapeDialog {
 
 	private int returncode = -1;
 
-	private static ImageIcon ERROR_ICON;
-	private static ImageIcon WARNING_ICON;
-	private static ImageIcon INFORMATION_ICON;
-	private static ImageIcon QUESTION_ICON;
+	public static ImageIcon ERROR_ICON;
+	public static ImageIcon WARNING_ICON;
+	public static ImageIcon INFORMATION_ICON;
+	public static ImageIcon QUESTION_ICON;
 
 	static {
 		ERROR_ICON = loadIcon("dialog-error.png");
@@ -108,10 +108,19 @@ public class Messagebox extends JEscapeDialog {
 		JButton bt1 = new JButton(message);
 		if (defaultButton) {
 			bt1.setFont(bt1.getFont().deriveFont(Font.BOLD));
-			gbmButton.setX(nextButtonX++).setY(0).setFill(GridBagConstraints.NONE).setWeightX(0).setPreferedSize(120, 50).setComp(bt1);
+			
+			int width = 120;
+			if(width < bt1.getPreferredSize().getWidth()) {
+				width = (int)bt1.getPreferredSize().getWidth();
+			}
+			gbmButton.setX(nextButtonX++).setY(0).setFill(GridBagConstraints.NONE).setWeightX(0).setPreferedSize(width, 50).setComp(bt1);
 
 		} else {
-			gbmButton.setX(nextButtonX++).setY(0).setFill(GridBagConstraints.NONE).setWeightX(0).setPreferedSize(100, 30).setComp(bt1);
+			int width = 100;
+			if(width < bt1.getPreferredSize().getWidth()) {
+				width = (int)bt1.getPreferredSize().getWidth();
+			}
+			gbmButton.setX(nextButtonX++).setY(0).setFill(GridBagConstraints.NONE).setWeightX(0).setPreferedSize(width, 30).setComp(bt1);
 		}
 
 		bt1.addActionListener(new ActionListener() {

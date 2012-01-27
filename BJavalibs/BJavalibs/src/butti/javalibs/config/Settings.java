@@ -16,7 +16,7 @@ public class Settings {
 	public Settings(String filename) {
 		this.filename = filename;
 		try {
-			File file = new File(ConfigPath.getConfigPath() + filename);
+			File file = new File(ConfigPath.getSettingsPath() + filename);
 			if (file.exists()) {
 				FileInputStream in = new FileInputStream(file);
 				settings.load(in);
@@ -35,7 +35,7 @@ public class Settings {
 
 	private void save() {
 		try {
-			FileOutputStream out = new FileOutputStream(new File(ConfigPath.getConfigPath() + filename));
+			FileOutputStream out = new FileOutputStream(new File(ConfigPath.getSettingsPath() + filename));
 			settings.store(out, "MaskDocu Benutzereinstellungen");
 			out.close();
 		} catch (Exception e) {
