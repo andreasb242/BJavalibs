@@ -40,7 +40,14 @@ public class Errorhandler {
 		// Festlegung des Formats:
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
-		File folder = new File(ConfigPath.getErrorLogPath());
+		String errorpath = ConfigPath.getErrorLogPath();
+		
+		if(errorpath == null) {
+			Errorhandler.showError(new NullPointerException("errorpath == null"), "errorlogPath in config/config.properties ist nicht gesetzt!");
+			System.exit(1);
+		}
+		
+		File folder = new File(errorpath);
 		if (folder.exists()) {
 			System.out.println("Folder \"" + ConfigPath.getErrorLogPath() + "\" exists");
 			if(!folder.isDirectory()) {

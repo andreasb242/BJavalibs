@@ -1,13 +1,13 @@
 package butti.javalibs.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;
 
 import butti.javalibs.errorhandler.Errorhandler;
 import butti.javalibs.gui.messagebox.Messagebox;
-
 
 /**
  * Öffnet den System File Browser
@@ -50,8 +50,7 @@ public class OpenFileBrowser {
 		try {
 			String line;
 			Process p = Runtime.getRuntime().exec(exec);
-			BufferedReader input = new BufferedReader(new InputStreamReader(p
-					.getInputStream()));
+			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
 			}
@@ -70,13 +69,17 @@ public class OpenFileBrowser {
 	 *            Der Pfad der geöffnet werden soll
 	 */
 	public static void openPath(String path) {
+		File file = new File(path);
+		
+		path = file.getAbsolutePath();
+
 		System.out.println("Open Path: " + path);
 
 		try {
 			switch (getOs()) {
 			case WINDOWS:
 				path = StringUtil.replace(path, "/", "\\");
-				path = path.substring(0, 2)	+ StringUtil.replace(path.substring(2), "\\\\", "\\");
+				path = path.substring(0, 2) + StringUtil.replace(path.substring(2), "\\\\", "\\");
 
 				if (exec("explorer.exe /n,/e,\"" + path + "\"")) {
 					return;
@@ -97,7 +100,7 @@ public class OpenFileBrowser {
 				}
 				break;
 			}
-			
+
 			Messagebox.showWarning(null, "Ordner öffnen", "Der Pfad \"" + path + "\" konnte nicht geöffnet werden.");
 		} catch (Exception e) {
 			Errorhandler.showError(e, "Der Pfad \"" + path + "\" konnte nicht im Filebrowser geöffnet werden!");
@@ -108,7 +111,8 @@ public class OpenFileBrowser {
 	/**
 	 * Runns an Process
 	 * 
-	 * @param commands The commands to run
+	 * @param commands
+	 *            The commands to run
 	 */
 	public static void runProcessAsync(String[] commands) {
 		switch (getOs()) {

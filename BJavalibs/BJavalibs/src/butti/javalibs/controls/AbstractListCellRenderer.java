@@ -108,10 +108,9 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 		}
 		return filter[index];
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	public Component getListCellRendererComponent(JList list, Object value,
-			int index, boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
 		this.selected = isSelected;
 
@@ -122,6 +121,8 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 			this.value = null;
 		}
 
+		int height = HEIGHT;
+
 		if (this.value != null) {
 			// Beim ersten Rendern ist ggf. keine Schrift verfügbar, sofern der
 			// erste Text nicht der längste ist kein Problem.
@@ -130,10 +131,23 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 			if (defaultFont != null || getFont() != null) {
 				calculateMinWidth(this.value);
 			}
+			height = calcHeight(this.value);
 		}
-		setPreferredSize(new Dimension(width, HEIGHT));
+
+		setPreferredSize(new Dimension(width, height));
 
 		return this;
+	}
+
+	/**
+	 * Berechnet die Höhe des Eintrages
+	 * 
+	 * @param value
+	 *            Die Daten
+	 * @return Die Höhe in PX
+	 */
+	protected int calcHeight(E data) {
+		return HEIGHT;
 	}
 
 	/**

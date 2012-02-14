@@ -3,6 +3,7 @@ package butti.javalibs.util;
 import java.io.File;
 
 import butti.javalibs.errorhandler.Errorhandler;
+import butti.javalibs.gui.messagebox.Messagebox;
 
 public class RestartUtil {
 	public static boolean restartApplication(Object classInJarFile) {
@@ -12,6 +13,9 @@ public class RestartUtil {
 			jarFile = new File(classInJarFile.getClass().getProtectionDomain().getCodeSource().getLocation().toURI());
 		} catch (Exception e) {
 			Errorhandler.logError(e);
+			
+			Messagebox.showWarning(null, "Restart", "Die Applikation konnte nicht neu gestartet werden, bitte starten Sie die Applikation manuell neu");
+			
 			return false;
 		}
 
