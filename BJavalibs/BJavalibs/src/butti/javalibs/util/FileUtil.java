@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
@@ -111,6 +112,21 @@ public class FileUtil {
 			if (fis != null) {
 				fis.close();
 			}
+			if (fos != null) {
+				fos.close();
+			}
+		}
+	}
+
+	public static void copyFile(InputStream in, File out) throws IOException {
+		FileOutputStream fos = new FileOutputStream(out);
+		try {
+			byte[] buf = new byte[1024];
+			int i = 0;
+			while ((i = in.read(buf)) != -1) {
+				fos.write(buf, 0, i);
+			}
+		} finally {
 			if (fos != null) {
 				fos.close();
 			}

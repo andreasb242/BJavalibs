@@ -1,48 +1,7 @@
 package butti.javalibs.config;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Properties;
+public interface Settings {
 
-import butti.javalibs.errorhandler.Errorhandler;
-
-
-public class Settings {
-	private Properties settings = new Properties();
-
-	private final String filename;
-
-	public Settings(String filename) {
-		this.filename = filename;
-		try {
-			File file = new File(ConfigPath.getSettingsPath() + filename);
-			if (file.exists()) {
-				FileInputStream in = new FileInputStream(file);
-				settings.load(in);
-				in.close();
-			}
-		} catch (Exception e) {
-			// Wenn die Settings nicht geladen werden können einfach
-			// Defaultwerte benutzen (z.B. bei erstem Start)
-			e.printStackTrace();
-		}
-	}
-
-	public Settings() {
-		this("settings.properties");
-	}
-
-	private void save() {
-		try {
-			FileOutputStream out = new FileOutputStream(new File(ConfigPath.getSettingsPath() + filename));
-			settings.store(out, "MaskDocu Benutzereinstellungen");
-			out.close();
-		} catch (Exception e) {
-			Errorhandler.showError(e, "Einstellungen konnten nicht gespeichert werden!");
-		}
-	}
-	
 	/**
 	 * Gibt eine Einstellung zurück
 	 * 
@@ -50,9 +9,7 @@ public class Settings {
 	 *            Der name der Einstellung
 	 * @return Der Wert der Einstellung
 	 */
-	public boolean isSetting(String name) {
-		return isSetting(name, false);
-	}
+	public abstract boolean isSetting(String name);
 
 	/**
 	 * Gibt eine Einstellung zurück
@@ -63,13 +20,7 @@ public class Settings {
 	 *            Der Defaultwert
 	 * @return Der Wert der Einstellung
 	 */
-	public boolean isSetting(String name, boolean defaultValue) {
-		String value = settings.getProperty(name);
-		if (value == null) {
-			return defaultValue;
-		}
-		return "true".equals(value);
-	}
+	public abstract boolean isSetting(String name, boolean defaultValue);
 
 	/**
 	 * Setzt eine Einstellung
@@ -79,9 +30,7 @@ public class Settings {
 	 * @param value
 	 *            Der Wert der Einstellung
 	 */
-	public void setSetting(String name, boolean value) {
-		setSetting(name, Boolean.toString(value));
-	}
+	public abstract void setSetting(String name, boolean value);
 
 	/**
 	 * Setzt eine Einstellung
@@ -91,9 +40,7 @@ public class Settings {
 	 * @param value
 	 *            Der Wert der Einstellung
 	 */
-	public void setSetting(String name, double value) {
-		setSetting(name, String.valueOf(value));
-	}
+	public abstract void setSetting(String name, double value);
 
 	/**
 	 * Setzt eine Einstellung
@@ -103,10 +50,7 @@ public class Settings {
 	 * @param value
 	 *            Der Wert der Einstellung
 	 */
-	public void setSetting(String name, String value) {
-		settings.setProperty(name, value);
-		save();
-	}
+	public abstract void setSetting(String name, String value);
 
 	/**
 	 * Gibt eine Einstellung zurück
@@ -117,13 +61,7 @@ public class Settings {
 	 *            Der Defaultwert
 	 * @return Der Wert der Einstellung
 	 */
-	public String getSetting(String name, String defaultValue) {
-		String value = settings.getProperty(name);
-		if (value == null) {
-			return defaultValue;
-		}
-		return value;
-	}
+	public abstract String getSetting(String name, String defaultValue);
 
 	/**
 	 * Gibt eine Einstellung zurück
@@ -134,13 +72,7 @@ public class Settings {
 	 *            Der Defaultwert
 	 * @return Der Wert der Einstellung
 	 */
-	public double getSetting(String name, double defaultValue) {
-		try {
-			return Double.parseDouble(settings.getProperty(name));
-		} catch(Exception e) {
-		}
-		return defaultValue;
-	}
+	public abstract double getSetting(String name, double defaultValue);
 
 	/**
 	 * Gibt eine Einstellung zurück
@@ -149,7 +81,6 @@ public class Settings {
 	 *            Der name der Einstellung
 	 * @return Der Wert der Einstellung oder NULL wenn nicht gefunden
 	 */
-	public String getSetting(String name) {
-		return getSetting(name, null);
-	}
+	public abstract String getSetting(String name);
+
 }
