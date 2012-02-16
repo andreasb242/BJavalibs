@@ -107,9 +107,12 @@ public class DirChooser {
 	public DirChooser(Window parent, boolean showHidden, String selectedFolder) {
 		dialog = new JDialog(parent);
 		dialog.setModal(true);
+		
 		dialog.setTitle("Ordner wählen");
 
 		dialog.setLayout(new BorderLayout());
+		
+		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		initCenterPanel(showHidden);
 		initBottom();

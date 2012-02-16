@@ -1,5 +1,7 @@
 package butti.filechooser;
 
+import java.io.File;
+
 import javax.swing.UIManager;
 
 import butti.filechooser.DirChooser;
@@ -12,7 +14,13 @@ public class Main {
 		} catch (Exception e) {
 		}
 
-		DirChooser c = new DirChooser(null, "C:\\ATM2000\\BuildWithPHP\\config");
+		DirChooser c;
+		if(new File("C:\\").exists()) {
+			c = new DirChooser(null, "C:\\");
+		} else {
+			c = new DirChooser(null, "/");
+		}
+		
 		if (c.showDirectoryDialog()) {
 			System.out.println("ordner gewählt: " + c.getSelectedFolder());
 		}
