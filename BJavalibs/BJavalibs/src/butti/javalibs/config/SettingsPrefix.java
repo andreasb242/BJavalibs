@@ -74,4 +74,17 @@ public class SettingsPrefix implements Settings {
 		return settings.getSetting(prefix + name);
 	}
 
+	@Override
+	public String[] getKeysStartingWith(String prefix) {
+		String[] keys = settings.getKeysStartingWith(this.prefix + prefix);
+
+		int len = this.prefix.length();
+
+		for (int i = 0; i < len; i++) {
+			keys[i] = keys[i].substring(len);
+		}
+
+		return keys;
+	}
+
 }

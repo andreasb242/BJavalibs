@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
+import java.util.Vector;
 
 import butti.javalibs.errorhandler.Errorhandler;
 
@@ -117,5 +118,18 @@ public class FileSettings implements Settings {
 	@Override
 	public String getSetting(String name) {
 		return getSetting(name, null);
+	}
+
+	@Override
+	public String[] getKeysStartingWith(String prefix) {
+		Vector<String> keys = new Vector<String>();
+
+		for (Object k : settings.keySet()) {
+			String s = k.toString();
+			if (s.startsWith(prefix)) {
+				keys.add(s);
+			}
+		}
+		return keys.toArray(new String[] {});
 	}
 }

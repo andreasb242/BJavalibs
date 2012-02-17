@@ -72,7 +72,6 @@ public class NumericTextField extends JTextField implements
 
 	public void setValue(long l) {
 		setText(getFormat().format(l));
-		;
 	}
 
 	public void setValue(double d) {

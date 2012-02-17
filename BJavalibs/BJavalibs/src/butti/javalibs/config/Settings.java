@@ -83,4 +83,9 @@ public interface Settings {
 	 */
 	public abstract String getSetting(String name);
 
+	/**
+	 * Gets all property keys starting with this prefix
+	 */
+	public abstract String[] getKeysStartingWith(String prefix);
+
 }
