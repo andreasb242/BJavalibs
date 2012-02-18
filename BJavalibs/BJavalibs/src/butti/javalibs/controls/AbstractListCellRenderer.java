@@ -71,9 +71,10 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 	 */
 	private String[] filter;
 
+	/**
+	 * Das Hintergrundbild (z.B. Verlauf)
+	 */
 	private BufferedImage background;
-
-	public static final int MAX_PREVIE_WIDTH = 80;
 
 	/**
 	 * Konstruktor
@@ -307,7 +308,10 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 			g.fillRect(0, 0, getWidth(), getHeight() - 1);
 		}
 		g.setColor(Color.LIGHT_GRAY);
-		g.drawLine(0, HEIGHT - 1, width, HEIGHT - 1);
+		
+		int height = calcHeight(this.value);
+		
+		g.drawLine(0, height - 1, width, height - 1);
 		setFontColor();
 	}
 
