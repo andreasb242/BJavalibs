@@ -1,4 +1,4 @@
-<project name="BJavalibs" basedir="." default="jar">
+<project name="Dirchooser" basedir="." default="jar">
 	<property name="build" value="build" />
 	<property file="build.properties" />
 	<tstamp>
@@ -33,7 +33,7 @@
 
 
 		<!-- Build the jar file -->
-		<jar basedir="${build}" destfile="${build}/B-Lib.jar" />
+		<jar basedir="${build}" destfile="${build}/DirChooser.jar" />
 
 	</target>
 </project>
