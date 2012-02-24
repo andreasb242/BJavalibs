@@ -17,7 +17,7 @@
 
 	<target name="compile" depends="init">
 		<!-- Compile the java code -->
-		<javac debug="true" srcdir="src" destdir="${build}" encoding="UTF-8" />
+		<javac debug="true" srcdir="src" destdir="${build}" encoding="UTF-8" includeantruntime="false" />
 	</target>
 
 	<target name="jar" depends="compile">
