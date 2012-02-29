@@ -243,6 +243,7 @@ public class DirChooser {
 	 * @return
 	 */
 	private boolean setSelectedFolder(String folder) {
+		// TODO funktioniert nicht immer / korrekt
 		DirItem item = root.getFolder(folder);
 		if (item != null) {
 			Vector<Object> objectPath = new Vector<Object>();

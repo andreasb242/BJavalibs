@@ -8,10 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Properties;
 
-import javax.swing.JFrame;
-
 import butti.javalibs.errorhandler.Errorhandler;
-
 
 public class WindowPositionSaver {
 	private String name;
@@ -51,38 +48,16 @@ public class WindowPositionSaver {
 				return;
 			}
 
-			Properties p = new Properties();
+			WindowPositionProperties p = new WindowPositionProperties();
 			p.load(new FileInputStream(f));
 
-			int x, y, width, height;
-
-			x = window.getLocation().x;
-			y = window.getLocation().y;
-			width = window.getWidth();
-			height = window.getHeight();
-
-			x = Integer.parseInt(p.getProperty("x", "" + x));
-			y = Integer.parseInt(p.getProperty("y", "" + y));
-			width = Integer.parseInt(p.getProperty("width", "" + width));
-			height = Integer.parseInt(p.getProperty("height", "" + height));
-
-			window.setLocation(x, y);
-			window.setSize(width, height);
-			if (window instanceof JFrame) {
-				if (Boolean.parseBoolean(p.getProperty("maximized"))) {
-					((JFrame) window).setExtendedState(((JFrame) window)
-							.getExtendedState()
-							| JFrame.MAXIMIZED_BOTH);
-				}
-			}
+			p.applay(window);
 
 			if (add != null) {
 				add.load(p);
 			}
 		} catch (Exception e) {
-			Errorhandler.showError(e, "Fensterposition für das Fenster \""
-					+ window.getName() + "\" vom Typ \"" + name
-					+ "\" konnte nicht geladen werden!");
+			Errorhandler.showError(e, "Fensterposition für das Fenster \"" + window.getName() + "\" vom Typ \"" + name + "\" konnte nicht geladen werden!");
 		}
 	}
 
@@ -94,37 +69,17 @@ public class WindowPositionSaver {
 				f.createNewFile();
 			}
 
-			Properties p = new Properties();
+			WindowPositionProperties p = new WindowPositionProperties();
 
-			int x, y, width, height;
-
-			x = window.getLocation().x;
-			y = window.getLocation().y;
-			width = window.getWidth();
-			height = window.getHeight();
-
-			p.setProperty("x", "" + x);
-			p.setProperty("y", "" + y);
-			p.setProperty("width", "" + width);
-			p.setProperty("height", "" + height);
-			if (window instanceof JFrame) {
-				if ((((JFrame) window).getExtendedState() & JFrame.MAXIMIZED_BOTH) == JFrame.MAXIMIZED_BOTH) {
-					p.setProperty("maximized", "true");
-				} else {
-					p.setProperty("maximized", "false");
-				}
-			}
+			p.readWindowPos(window);
 
 			if (add != null) {
 				add.save(p);
 			}
 
-			p.store(new FileOutputStream(f),
-					"Fensterposition des Fenstertypes \"" + name + "\"");
+			p.store(new FileOutputStream(f), "Fensterposition des Fenstertypes \"" + name + "\"");
 		} catch (Exception e) {
-			Errorhandler.showError(e, "Fensterposition für das Fenster \""
-					+ window.getName() + "\" vom Typ \"" + name
-					+ "\" konnte nicht gespeichert werden!");
+			Errorhandler.showError(e, "Fensterposition für das Fenster \"" + window.getName() + "\" vom Typ \"" + name + "\" konnte nicht gespeichert werden!");
 		}
 	}
 
