@@ -24,6 +24,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+import butti.javalibs.util.DrawHelper;
+
 /**
  * Ein Suchfeld mit Suchicon
  * 
@@ -110,6 +112,8 @@ public class SearchField extends JTextField {
 	public void paint(Graphics g) {
 		super.paint(g);
 
+		DrawHelper.antialisingOn(g);
+		
 		/**
 		 * Platzhalter Text darstellen wenn kein Text eingegeben
 		 */
@@ -135,16 +139,14 @@ public class SearchField extends JTextField {
 			super(0, 0, 0, 15);
 		}
 
-		public void paintBorder(Component c, Graphics oldGraphics, int x,
-				int y, int width, int height) {
+		public void paintBorder(Component c, Graphics oldGraphics, int x, int y, int width, int height) {
 			SearchField field = (SearchField) c;
 			if (field.showingPlaceholderText || field.getText().length() == 0) {
 				return;
 			}
 
 			Graphics2D g = (Graphics2D) oldGraphics;
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			final int circleL = 14;
 			final int circleX = x + width - circleL;
 			final int circleY = y + (height - 1 - circleL) / 2;
@@ -187,8 +189,7 @@ public class SearchField extends JTextField {
 
 			// In lieu of proper hit-testing for the circle, check that
 			// the mouse is somewhere in the border.
-			Rectangle innerArea = SwingUtilities.calculateInnerArea(
-					SearchField.this, null);
+			Rectangle innerArea = SwingUtilities.calculateInnerArea(SearchField.this, null);
 			return (innerArea.contains(e.getPoint()) == false);
 		}
 

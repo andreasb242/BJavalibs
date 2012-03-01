@@ -4,9 +4,6 @@ import java.util.Vector;
 
 import butti.javalibs.controls.listcontrol.SearchListener;
 
-
-
-
 /**
  * Abstraktes Searchmodul (nur Listener implementiert)
  * 

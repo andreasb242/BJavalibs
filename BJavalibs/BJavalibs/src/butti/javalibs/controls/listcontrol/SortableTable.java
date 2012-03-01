@@ -2,8 +2,8 @@ package butti.javalibs.controls.listcontrol;
 
 import java.awt.Dimension;
 import java.awt.FocusTraversalPolicy;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -17,17 +17,17 @@ import javax.swing.ListCellRenderer;
 import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterEvent.Type;
 import javax.swing.event.RowSorterListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.event.RowSorterEvent.Type;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import butti.javalibs.controls.listcontrol.searchmodules.NoSearch;
 import butti.javalibs.controls.listcontrol.searchmodules.SearchModul;
-
 
 /**
  * Eine sortierbare Tabelle mit einem Suchfeld pro Spalte
@@ -89,6 +89,11 @@ public class SortableTable extends JPanel implements SearchListener {
 	private JPanel tableHead;
 
 	/**
+	 * Die Höhe der Suchfelder
+	 */
+	private int searchFieldHeight;
+
+	/**
 	 * Erstellt eine neue Sortierbare Tabelle
 	 * 
 	 * @param model
@@ -96,6 +101,10 @@ public class SortableTable extends JPanel implements SearchListener {
 	 */
 	public SortableTable(AbstractSortableTableModel model) {
 		this.model = model;
+
+		if (model == null) {
+			throw new NullPointerException("model == null");
+		}
 
 		tblHeader = new JTable(model);
 		listModel = new SortListModel();
@@ -135,8 +144,7 @@ public class SortableTable extends JPanel implements SearchListener {
 		RowFilter<Object, Object> filter = new RowFilter<Object, Object>() {
 
 			@Override
-			public boolean include(
-					javax.swing.RowFilter.Entry<? extends Object, ? extends Object> entry) {
+			public boolean include(javax.swing.RowFilter.Entry<? extends Object, ? extends Object> entry) {
 
 				for (int i = 0; i < entry.getValueCount(); i++) {
 					if (!filter(i, entry.getValue(i))) {
@@ -151,11 +159,13 @@ public class SortableTable extends JPanel implements SearchListener {
 
 		rowSorter.setRowFilter(filter);
 
-		setSearchEnabled(searchEnabled);
+		// force update
+		searchEnabled = true;
+		setSearchEnabled(false);
 
 		list = new JList(listModel);
 
-		list.addKeyListener(new KeyListener() {
+		list.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -171,25 +181,17 @@ public class SortableTable extends JPanel implements SearchListener {
 				}
 			}
 
-			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-
 		});
 
 		listScroll = new JScrollPane(list);
-
-		tableHead.setPreferredSize(new Dimension(20, 40));
 
 		listScroll.setColumnHeaderView(tableHead);
 
 		add(listScroll);
 
-		setPreferredSize(new Dimension((int) Math.max(tblHeader
-				.getPreferredSize().getWidth(), list.getPreferredSize()
-				.getWidth()),
-				(int) (tblHeader.getPreferredSize().getHeight() + list
-						.getPreferredSize().getHeight())));
+		int width = (int) Math.max(tblHeader.getPreferredSize().getWidth(), list.getPreferredSize().getWidth());
+		int height = (int) (tblHeader.getPreferredSize().getHeight() + list.getPreferredSize().getHeight());
+		setPreferredSize(new Dimension(width, height));
 
 		setFocusOrder();
 	}
@@ -198,19 +200,20 @@ public class SortableTable extends JPanel implements SearchListener {
 	 * Header layouten
 	 */
 	private void doPanelLayout() {
-		int header = 20;
-		int headerWidth = getWidth()
-				- listScroll.getVerticalScrollBar().getWidth();
-		tblHeader.getTableHeader().setPreferredSize(
-				new Dimension(headerWidth, header));
-		tblHeader.getTableHeader().setBounds(0, 0, headerWidth, header);
+		JTableHeader tableHeader = tblHeader.getTableHeader();
+		int header = tableHeader.getPreferredSize().height;
+		int headerWidth = getWidth() - 7;
 
-		Enumeration<TableColumn> elements = tblHeader.getColumnModel()
-				.getColumns();
+		if (listScroll.getVerticalScrollBar().isVisible()) {
+			headerWidth -= listScroll.getVerticalScrollBar().getWidth();
+		}
 
-		int width = getWidth() / tblHeader.getColumnModel().getColumnCount();
-		int restWidth = getWidth()
-				% tblHeader.getColumnModel().getColumnCount();
+		tableHeader.setBounds(0, 0, headerWidth, header);
+
+		Enumeration<TableColumn> elements = tblHeader.getColumnModel().getColumns();
+
+		int width = headerWidth / tblHeader.getColumnModel().getColumnCount();
+		int restWidth = headerWidth % tblHeader.getColumnModel().getColumnCount();
 
 		while (elements.hasMoreElements()) {
 			TableColumn t = elements.nextElement();
@@ -224,11 +227,9 @@ public class SortableTable extends JPanel implements SearchListener {
 			}
 		}
 
-		int searchHeight = 0;
-		restWidth = getWidth() % tblHeader.getColumnModel().getColumnCount();
+		restWidth = headerWidth % tblHeader.getColumnModel().getColumnCount();
 
 		if (searchEnabled) {
-			searchHeight = 20;
 			int x = 0;
 			int w;
 			for (SearchModul mod : searchFields) {
@@ -237,7 +238,7 @@ public class SortableTable extends JPanel implements SearchListener {
 					restWidth--;
 					w++;
 				}
-				mod.getComponent().setBounds(x, header, w, searchHeight);
+				mod.getComponent().setBounds(x, header, w, this.searchFieldHeight);
 				x += w;
 			}
 		}
@@ -257,16 +258,14 @@ public class SortableTable extends JPanel implements SearchListener {
 		focusableComponent.add(list);
 
 		for (int i = 0; i < model.getColumnCount(); i++) {
-			if (model.getSearchModul(i) == null
-					|| model.getSearchModul(i).getComponent() == null) {
+			if (model.getSearchModul(i) == null || model.getSearchModul(i).getComponent() == null) {
 				continue;
 			}
 			focusableComponent.add(model.getSearchModul(i).getComponent());
 		}
 
 		// Setzt die richtige Tabulatorenreihenfolge
-		FocusTraversalPolicy policy = getFocusTraversal(focusableComponent
-				.toArray(new JComponent[focusableComponent.size()]));
+		FocusTraversalPolicy policy = getFocusTraversal(focusableComponent.toArray(new JComponent[focusableComponent.size()]));
 
 		setFocusTraversalPolicy(policy); // setzen
 		setFocusCycleRoot(true);// enablen
@@ -288,32 +287,26 @@ public class SortableTable extends JPanel implements SearchListener {
 	 *         setFocusTraversalPolicy(FocsTraersalPolicy) und aktivieren mit
 	 *         setFocusCycleRoot(true)
 	 */
-	public static FocusTraversalPolicy getFocusTraversal(
-			final JComponent order[]) {
+	public static FocusTraversalPolicy getFocusTraversal(final JComponent order[]) {
 		FocusTraversalPolicy policy = new FocusTraversalPolicy() {
 			java.util.List<JComponent> list = java.util.Arrays.asList(order);
 
-			public java.awt.Component getFirstComponent(
-					java.awt.Container focusCycleRoot) {
+			public java.awt.Component getFirstComponent(java.awt.Container focusCycleRoot) {
 				return order[0];
 			}
 
-			public java.awt.Component getLastComponent(
-					java.awt.Container focusCycleRoot) {
+			public java.awt.Component getLastComponent(java.awt.Container focusCycleRoot) {
 				return order[order.length - 1];
 			}
 
-			public java.awt.Component getComponentAfter(
-					java.awt.Container focusCycleRoot,
-					java.awt.Component aComponent) {
+			public java.awt.Component getComponentAfter(java.awt.Container focusCycleRoot, java.awt.Component aComponent) {
 				int index = 0, x = -1;
 				index = list.indexOf(aComponent);
 				index++; // automatisch erhöht, sodaß er unten nichts
 				// wegzeiehn muß
 				// er geht rein entweder wenn es disabled ist oder wenn es nicht
 				// angezeigt wird
-				if (!order[index % order.length].isEnabled()
-						|| !order[index % order.length].isVisible()) {
+				if (!order[index % order.length].isEnabled() || !order[index % order.length].isVisible()) {
 					x = index;
 					index = -1;
 					// zuerst die Schleife nach hinten
@@ -336,15 +329,11 @@ public class SortableTable extends JPanel implements SearchListener {
 				return order[index % order.length];
 			}
 
-			public java.awt.Component getComponentBefore(
-					java.awt.Container focusCycleRoot,
-					java.awt.Component aComponent) {
+			public java.awt.Component getComponentBefore(java.awt.Container focusCycleRoot, java.awt.Component aComponent) {
 				int index = list.indexOf(aComponent);
 				int x = -1;
 				index--;
-				if (!order[(index + order.length) % order.length].isEnabled()
-						|| !order[(index + order.length) % order.length]
-								.isVisible()) {
+				if (!order[(index + order.length) % order.length].isEnabled() || !order[(index + order.length) % order.length].isVisible()) {
 					x = index;
 					index = -1;
 					for (; x >= 0; x--) {
@@ -368,8 +357,7 @@ public class SortableTable extends JPanel implements SearchListener {
 				return order[(index + order.length) % order.length];
 			}
 
-			public java.awt.Component getDefaultComponent(
-					java.awt.Container focusCycleRoot) {
+			public java.awt.Component getDefaultComponent(java.awt.Container focusCycleRoot) {
 				return order[0];
 			}
 
@@ -421,11 +409,29 @@ public class SortableTable extends JPanel implements SearchListener {
 	 *            true wenn aktiviert
 	 */
 	public void setSearchEnabled(boolean searchEnabled) {
+		if (this.searchEnabled == searchEnabled) {
+			return;
+		}
 		this.searchEnabled = searchEnabled;
+
+		int thHeight = tblHeader.getTableHeader().getPreferredSize().height;
+
+		this.searchFieldHeight = 0;
+
 		if (searchEnabled) {
 			generateSearchFileds();
+			for (int i = 0; i < model.getColumnCount(); i++) {
+				JComponent c = model.getSearchModul(i).getComponent();
+				if (model.getSearchModul(i) == null || c == null) {
+					continue;
+				}
+
+				searchFieldHeight = Math.max(c.getPreferredSize().height, searchFieldHeight);
+			}
+			tableHead.setPreferredSize(new Dimension(20, thHeight + searchFieldHeight));
 		} else {
 			deleteSearchFields();
+			tableHead.setPreferredSize(new Dimension(20, thHeight));
 		}
 	}
 
@@ -545,8 +551,7 @@ public class SortableTable extends JPanel implements SearchListener {
 
 		public Object getElementAt(int index) {
 			try {
-				return model.getElementAt(rowSorter
-						.convertRowIndexToModel(index));
+				return model.getElementAt(rowSorter.convertRowIndexToModel(index));
 			} catch (Exception e) {
 				return null;
 			}
@@ -559,9 +564,7 @@ public class SortableTable extends JPanel implements SearchListener {
 		@Override
 		public void tableChanged(TableModelEvent e) {
 			try {
-				fireContentsChanged(this, rowSorter.convertRowIndexToView(e
-						.getFirstRow()), rowSorter.convertRowIndexToView(e
-						.getLastRow()));
+				fireContentsChanged(this, rowSorter.convertRowIndexToView(e.getFirstRow()), rowSorter.convertRowIndexToView(e.getLastRow()));
 
 				// Probleme mit dem Sortieren / Filter, model nicht aktuell beim
 				// Daten laden
