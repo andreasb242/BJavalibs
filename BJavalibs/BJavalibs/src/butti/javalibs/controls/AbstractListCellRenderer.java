@@ -21,9 +21,6 @@ import javax.swing.ListCellRenderer;
 
 import butti.javalibs.controls.listcontrol.FilteredRenderer;
 
-
-
-
 /**
  * Renderer für die SortableTable
  * 
@@ -32,8 +29,7 @@ import butti.javalibs.controls.listcontrol.FilteredRenderer;
  * @param Typ
  *            der angezeigt werden soll
  */
-public abstract class AbstractListCellRenderer<E extends Object> extends
-		JComponent implements ListCellRenderer, FilteredRenderer {
+public abstract class AbstractListCellRenderer<E extends Object> extends JComponent implements ListCellRenderer, FilteredRenderer {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -109,7 +105,7 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 		}
 		return filter[index];
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
@@ -220,6 +216,20 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 	}
 
 	/**
+	 * Sets the minimum with, overrides the old value
+	 */
+	protected void setMinWidthAbsolut(int width) {
+		this.width = width;
+	}
+
+	/**
+	 * @return The minimum width currently set
+	 */
+	public int getMinWidth() {
+		return this.width;
+	}
+
+	/**
 	 * Gibt das Objekt zurück
 	 * 
 	 * @return Das Objekt das dargestellt werden soll
@@ -230,18 +240,17 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 
 	@Override
 	public void paint(Graphics g) {
-		if(getHeight() == 0) {
+		if (getHeight() == 0) {
 			return;
 		}
-		
+
 		graphics = (Graphics2D) g;
 		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		this.defaultFont = g.getFont();
 
-		background = new BufferedImage(1, getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
+		background = new BufferedImage(1, getHeight(), BufferedImage.TYPE_INT_ARGB);
 
 		printBackground((Graphics2D) background.getGraphics(), 1);
 		printBackground(graphics, getWidth());
@@ -298,19 +307,18 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 			Color color1 = new Color(0x5591ec);
 			Color color2 = new Color(0x202aef);
 			// Paint a gradient from top to bottom
-			GradientPaint gp = new GradientPaint(0, 0, color1, 0, getHeight(),
-					color2);
+			GradientPaint gp = new GradientPaint(0, 0, color1, 0, getHeight(), color2);
 			g.setPaint(gp);
 			g.fillRect(0, 0, width, getHeight());
 		} else {
-			//super.paint(g);
+			// super.paint(g);
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight() - 1);
 		}
 		g.setColor(Color.LIGHT_GRAY);
-		
+
 		int height = calcHeight(this.value);
-		
+
 		g.drawLine(0, height - 1, width, height - 1);
 		setFontColor();
 	}
@@ -349,8 +357,7 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 	 * @param filterId
 	 *            ID des gesucten Textes
 	 */
-	protected void drawStringFilter(String str, int x, int y, int maxWidth,
-			int filterId) {
+	protected void drawStringFilter(String str, int x, int y, int maxWidth, int filterId) {
 		drawStringFilter(str, x, y, maxWidth, getFilter(filterId));
 	}
 
@@ -384,8 +391,7 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 	 * @param filter
 	 *            Gesucter Text
 	 */
-	protected void drawStringFilter(String str, int x, int y, int maxWidth,
-			String filter) {
+	protected void drawStringFilter(String str, int x, int y, int maxWidth, String filter) {
 		Shape clipBackup = null;
 
 		if (maxWidth != 0) {
@@ -394,8 +400,7 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 			if (clipBackup instanceof Rectangle) {
 				Rectangle r = (Rectangle) clipBackup;
 
-				graphics.setClip((int) r.getX(), (int) r.getY(), (int) r.getX()
-						+ x + maxWidth, (int) r.getHeight());
+				graphics.setClip((int) r.getX(), (int) r.getY(), (int) r.getX() + x + maxWidth, (int) r.getHeight());
 			}
 		}
 
@@ -474,11 +479,9 @@ public abstract class AbstractListCellRenderer<E extends Object> extends
 		for (int w = 0; w < width; w++) {
 			float alpha = 1 - (float) (w + 1) / (float) (width + 1);
 
-			graphics.setComposite(AlphaComposite.getInstance(
-					AlphaComposite.SRC_OVER, alpha));
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
 
-			graphics.drawImage(background, x - w, // Wohin wird das Bild
-													// kopiert (start X)
+			graphics.drawImage(background, x - w, // Wohin wird das Bild kopiert (start X)
 					y - fsize, // Wohin wird das Bild kopiert (start Y)
 					x - w + 1, // Wohin wird das Bild kopiert (end X)
 					y + maxDescent, // Wohin wird das Bild kopiert (end Y)
