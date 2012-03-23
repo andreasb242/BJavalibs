@@ -1,0 +1,40 @@
+package butti.javalibs.dirwatcher;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
+/**
+ * @author: bachi
+ */
+public abstract class ResourceWatcher<E extends ResourceListener<F>, F> extends IntervalThread {
+	private Collection<E> listeners;
+
+	public ResourceWatcher(int interval) {
+		super(interval);
+		listeners = new Vector<E>();
+	}
+
+	public void addResourceListener(E listener) {
+		listeners.add(listener);
+	}
+
+	protected void resourceAdded(F event) {
+		for (E listener : listeners) {
+			listener.resourceAdded(event);
+		}
+	}
+
+	protected void resourceChanged(F event) {
+		for (E listener : listeners) {
+			listener.resourceChanged(event);
+		}
+	}
+
+	protected void resourceDeleted(F event) {
+		for (E listener : listeners) {
+			listener.resourceDeleted(event);
+		}
+	}
+
+}
