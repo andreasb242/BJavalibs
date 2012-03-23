@@ -19,6 +19,10 @@ public abstract class ResourceWatcher<E extends ResourceListener<F>, F> extends 
 		listeners.add(listener);
 	}
 
+	public void removeAllResourceListeners() {
+		listeners.clear();
+	}
+
 	protected void resourceAdded(F event) {
 		for (E listener : listeners) {
 			listener.resourceAdded(event);
