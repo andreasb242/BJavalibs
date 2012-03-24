@@ -58,4 +58,8 @@ public class DirectoryWatcher extends ResourceWatcher<FileListener, File> {
 			}
 		}
 	}
+
+	public void setDirectory(String directory) {
+		this.directoryFile = new File(directory);
+	}
 }
