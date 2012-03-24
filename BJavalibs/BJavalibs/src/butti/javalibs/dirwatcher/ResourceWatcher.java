@@ -1,7 +1,6 @@
 package butti.javalibs.dirwatcher;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Vector;
 
 /**
