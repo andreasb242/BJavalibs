@@ -17,10 +17,10 @@ public abstract class IntervalThread implements Runnable{
 	
 	public void start() {
 		if (thread != null) {
-			running = false;
 			while (thread.getState() != Thread.State.TERMINATED) {
+				running = false;
 				try  {
-					thread.join();
+					thread.join(1000);
 				} catch (InterruptedException e) {
 					//
 				}
