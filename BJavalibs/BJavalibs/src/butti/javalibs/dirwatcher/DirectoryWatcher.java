@@ -12,18 +12,17 @@ public class DirectoryWatcher extends ResourceWatcher<FileListener, File> {
 	private Map<String, Long> previousFiles;
 	private File directoryFile;
 	
-	public DirectoryWatcher(String directory, int interval) throws IllegalArgumentException {
+	public DirectoryWatcher(int interval) throws IllegalArgumentException {
 		super(interval);
-		this.directoryFile = new File(directory);
-		if (!this.directoryFile.isDirectory()) {
-			throw new IllegalArgumentException("not a directory!");
-		}
 		currentFiles = new HashMap<String, Long>();
 		previousFiles = new HashMap<String, Long>();
 	}
 
-	@Override
-	public void start() {
+	public void start(String directory) throws IllegalArgumentException {
+		this.directoryFile = new File(directory);
+		if (!this.directoryFile.isDirectory()) {
+			throw new IllegalArgumentException("not a directory: " + directory);
+		}
 		updateFiles();
 		super.start();
 	}

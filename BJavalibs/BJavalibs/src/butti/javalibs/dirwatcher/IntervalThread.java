@@ -16,6 +16,16 @@ public abstract class IntervalThread implements Runnable{
 	}
 	
 	public void start() {
+		if (thread != null) {
+			running = false;
+			while (thread.getState() != Thread.State.TERMINATED) {
+				try  {
+					thread.join();
+				} catch (InterruptedException e) {
+					//
+				}
+			}
+		}
 		running = true;
 		thread = new Thread(this);
 		thread.start();
