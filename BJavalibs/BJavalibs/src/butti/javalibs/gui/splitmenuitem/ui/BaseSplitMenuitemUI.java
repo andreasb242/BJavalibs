@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -26,7 +28,7 @@ import javax.swing.plaf.ComponentUI;
 import butti.javalibs.gui.splitmenuitem.JFlatButton;
 import butti.javalibs.gui.splitmenuitem.SplitMenuitem;
 
-public class BaseSplitMenuitemUI extends SplitMenuItemUI {
+public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListener {
 	protected SplitMenuitem menuitem;
 	protected JLabel lbMain = new JLabel();
 
@@ -42,10 +44,7 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			menuitem.firePressed();
-			if (menuitem.getParent() instanceof JPopupMenu) {
-				JPopupMenu m = (JPopupMenu) menuitem.getParent();
-				m.setVisible(false);
-			}
+			closeMenu();
 		}
 
 		@Override
@@ -132,12 +131,14 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 		this.menuitem.remove(lbMain);
 		for (JButton b : additionalButtons) {
 			this.menuitem.remove(b);
+			b.removeActionListener(this);
 		}
 	}
 
 	protected void updateAdditionalActions() {
 		for (JButton b : additionalButtons) {
 			this.menuitem.remove(b);
+			b.removeActionListener(this);
 		}
 
 		additionalButtons.clear();
@@ -146,6 +147,7 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 			JButton b = createButton(a);
 			this.menuitem.add(b);
 			additionalButtons.add(b);
+			b.addActionListener(this);
 		}
 	}
 
@@ -238,6 +240,18 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 		if (hover) {
 			g.setColor(selectionBackground);
 			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		closeMenu();
+	}
+
+	protected void closeMenu() {
+		if (menuitem.getParent() instanceof JPopupMenu) {
+			JPopupMenu m = (JPopupMenu) menuitem.getParent();
+			m.setVisible(false);
 		}
 	}
 }
