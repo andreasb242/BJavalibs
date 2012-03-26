@@ -20,6 +20,8 @@ import javax.swing.plaf.metal.MetalButtonUI;
 /**
  * Source http://listen2gopi.blogspot.com/2008/01/flat-button-using-swing.html
  * 
+ * Adapted for Simulation
+ * 
  * @author Andreas Butti
  */
 public class JFlatButton extends JButton {
@@ -47,7 +49,7 @@ public class JFlatButton extends JButton {
 		// defaults
 		if (paintProp == null) {
 			paintProp = new PaintProperties();
-			paintProp.borderColor = Color.BLACK;
+			paintProp.borderColor = Color.GRAY;
 			paintProp.rollOver1 = Color.WHITE;
 			paintProp.rollOver2 = Color.LIGHT_GRAY;
 

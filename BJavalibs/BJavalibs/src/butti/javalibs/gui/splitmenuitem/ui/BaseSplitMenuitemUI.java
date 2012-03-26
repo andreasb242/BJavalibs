@@ -16,6 +16,7 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
@@ -34,14 +35,13 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 	protected Color defaultForeground = null;
 	protected boolean hover = false;
 
-	private Vector<JFlatButton> additionalButtons = new Vector<JFlatButton>();
+	private Vector<JButton> additionalButtons = new Vector<JButton>();
 
 	protected MouseListener mouseListener = new MouseListener() {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			menuitem.firePressed();
-			System.out.println(menuitem.getParent().getClass());
 			if (menuitem.getParent() instanceof JPopupMenu) {
 				JPopupMenu m = (JPopupMenu) menuitem.getParent();
 				m.setVisible(false);
@@ -130,23 +130,27 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 
 	private void uninstallComponents() {
 		this.menuitem.remove(lbMain);
-		for (JFlatButton b : additionalButtons) {
+		for (JButton b : additionalButtons) {
 			this.menuitem.remove(b);
 		}
 	}
 
 	protected void updateAdditionalActions() {
-		for (JFlatButton b : additionalButtons) {
+		for (JButton b : additionalButtons) {
 			this.menuitem.remove(b);
 		}
 
 		additionalButtons.clear();
 
 		for (Action a : menuitem.getAdditionalActions()) {
-			JFlatButton b = new JFlatButton(a);
+			JButton b = createButton(a);
 			this.menuitem.add(b);
+			additionalButtons.add(b);
 		}
+	}
 
+	private JButton createButton(Action a) {
+		return new JFlatButton(a);
 	}
 
 	private void uninstallListeners() {
@@ -192,6 +196,12 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 				w += s.width;
 				h += s.height;
 
+				for (JButton b : additionalButtons) {
+					s = b.getPreferredSize();
+					w += s.width + 2;
+					h = Math.max(h, s.height + margin.top + margin.bottom);
+				}
+
 				return new Dimension(w, h);
 			}
 
@@ -204,7 +214,17 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI {
 			public void layoutContainer(Container parent) {
 				Insets margin = menuitem.getInsets();
 
-				lbMain.setBounds(margin.left, margin.top, parent.getWidth() - margin.left - margin.right, parent.getHeight() - margin.top - margin.bottom);
+				int x = menuitem.getWidth() - margin.right;
+				int height = parent.getHeight();
+
+				for (JButton b : additionalButtons) {
+					Dimension s = b.getPreferredSize();
+					x -= s.width;
+					b.setBounds(x, 0, s.width, height);
+					x -= 2;
+				}
+
+				lbMain.setBounds(margin.left, margin.top, x - margin.left, height - margin.top - margin.bottom);
 			}
 
 			@Override

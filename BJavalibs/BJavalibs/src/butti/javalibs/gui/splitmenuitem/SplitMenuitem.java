@@ -74,12 +74,14 @@ public class SplitMenuitem extends AbstractButton {
 
 	public void addAction(Action additionalAction) {
 		additionalActions.add(additionalAction);
+
+		firePropertyChange(ADDITIONAL_ACTION_CHANGED, additionalAction, null);
 	}
 
 	public void removeAction(Action additionalAction) {
 		additionalActions.remove(additionalAction);
 
-		firePropertyChange(ADDITIONAL_ACTION_CHANGED, additionalActions, additionalActions);
+		firePropertyChange(ADDITIONAL_ACTION_CHANGED, null, additionalAction);
 	}
 
 	public Vector<Action> getAdditionalActions() {
