@@ -9,7 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import butti.javalibs.gui.splitmenuitem.ui.BaseSplitMenuitemUI;
 import butti.javalibs.gui.splitmenuitem.ui.SplitMenuItemUI;
 
 public class SplitMenuitem extends AbstractButton {
@@ -23,6 +22,18 @@ public class SplitMenuitem extends AbstractButton {
 	public static final String ADDITIONAL_ACTION_CHANGED = "additionalAction";
 
 	private Vector<Action> additionalActions = new Vector<Action>();
+
+	static {
+		// look and feel change is currently not supported, because it anyway
+		// don't work with all components
+
+		String lnf = UIManager.getLookAndFeel().getClass().getName();
+		if ("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel".equals(lnf)) {
+			UIManager.put(uiClassID, "butti.javalibs.gui.splitmenuitem.ui.NimbusSplitMenuitemUI");			
+		} else {
+			UIManager.put(uiClassID, "butti.javalibs.gui.splitmenuitem.ui.BaseSplitMenuitemUI");
+		}
+	}
 
 	public SplitMenuitem(String text) {
 		setText(text);
@@ -45,8 +56,10 @@ public class SplitMenuitem extends AbstractButton {
 		if (UIManager.get(getUIClassID()) != null) {
 			setUI((SplitMenuItemUI) UIManager.getUI(this));
 		} else {
-			setUI(new BaseSplitMenuitemUI());
+			//setUI(new BaseSplitMenuitemUI());
 		}
+		
+		System.out.println(getUI().getClass());
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 	protected Color defaultForeground = null;
 	protected boolean hover = false;
 
-	private Vector<JButton> additionalButtons = new Vector<JButton>();
+	protected Vector<JButton> additionalButtons = new Vector<JButton>();
 
 	protected MouseListener mouseListener = new MouseListener() {
 
@@ -75,7 +75,7 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 
 	};
 
-	private PropertyChangeListener propertyListener = new PropertyChangeListener() {
+	protected PropertyChangeListener propertyListener = new PropertyChangeListener() {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -121,7 +121,7 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 		this.menuitem = null;
 	}
 
-	private void uninstallDefaults() {
+	protected void uninstallDefaults() {
 	}
 
 	private void uninstallComponents() {
@@ -152,12 +152,12 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 		return new JFlatButton(a);
 	}
 
-	private void uninstallListeners() {
+	protected void uninstallListeners() {
 		this.menuitem.removePropertyChangeListener(propertyListener);
 		this.menuitem.removeMouseListener(mouseListener);
 	}
 
-	private void installDefaults() {
+	protected void installDefaults() {
 		menuitem.setMargin(new Insets(0, 0, 0, 0));
 		menuitem.setBorder(new EmptyBorder(2, 10, 2, 10));
 
@@ -168,19 +168,19 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 		lbMain.setForeground(defaultForeground);
 	}
 
-	private void installComponents() {
+	protected void installComponents() {
 		this.menuitem.add(lbMain);
 		lbMain.setText(this.menuitem.getText());
 		lbMain.setIcon(this.menuitem.getIcon());
 		updateAdditionalActions();
 	}
 
-	private void installListeners() {
+	protected void installListeners() {
 		this.menuitem.addPropertyChangeListener(propertyListener);
 		this.menuitem.addMouseListener(mouseListener);
 	}
 
-	private LayoutManager createLayoutManager() {
+	protected LayoutManager createLayoutManager() {
 		return new LayoutManager() {
 
 			@Override
