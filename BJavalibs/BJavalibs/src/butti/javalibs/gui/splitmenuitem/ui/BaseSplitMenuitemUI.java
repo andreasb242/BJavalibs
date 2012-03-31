@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ComponentUI;
 
@@ -58,10 +59,6 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			hover = true;
-			if (defaultForeground == null) {
-				defaultForeground = lbMain.getForeground();
-			}
-
 			lbMain.setForeground(selectionForeground);
 
 			menuitem.repaint();
@@ -164,8 +161,11 @@ public class BaseSplitMenuitemUI extends SplitMenuItemUI implements ActionListen
 		menuitem.setMargin(new Insets(0, 0, 0, 0));
 		menuitem.setBorder(new EmptyBorder(2, 10, 2, 10));
 
-		selectionBackground = Color.LIGHT_GRAY;
-		selectionForeground = Color.BLACK;
+		defaultForeground = UIManager.getColor("Menu.foreground");
+		selectionForeground = UIManager.getColor("Menu.selectionForeground");
+		selectionBackground = UIManager.getColor("Menu.selectionBackground");
+		
+		lbMain.setForeground(defaultForeground);
 	}
 
 	private void installComponents() {
