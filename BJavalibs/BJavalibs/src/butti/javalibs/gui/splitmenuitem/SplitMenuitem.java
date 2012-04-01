@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
+import butti.javalibs.gui.splitmenuitem.ui.BaseSplitMenuitemUI;
 import butti.javalibs.gui.splitmenuitem.ui.SplitMenuItemUI;
 
 public class SplitMenuitem extends AbstractButton {
@@ -56,10 +57,8 @@ public class SplitMenuitem extends AbstractButton {
 		if (UIManager.get(getUIClassID()) != null) {
 			setUI((SplitMenuItemUI) UIManager.getUI(this));
 		} else {
-			//setUI(new BaseSplitMenuitemUI());
+			setUI(new BaseSplitMenuitemUI());
 		}
-		
-		System.out.println(getUI().getClass());
 	}
 
 	@Override
