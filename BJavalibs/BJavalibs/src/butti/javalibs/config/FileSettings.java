@@ -34,7 +34,7 @@ public class FileSettings implements Settings {
 	public FileSettings(String filename) {
 		this.filename = filename;
 		try {
-			File file = new File(ConfigPath.getSettingsPath() + filename);
+			File file = new File(getSettingsFileName());
 			if (file.exists()) {
 				FileInputStream in = new FileInputStream(file);
 				settings.load(in);
@@ -55,12 +55,19 @@ public class FileSettings implements Settings {
 	}
 
 	/**
+	 * @return The Settings name folder
+	 */
+	public String getSettingsFileName() {
+		return ConfigPath.getSettingsPath() + filename;
+	}
+
+	/**
 	 * Save the settings to a file
 	 */
 	private void save() {
 		try {
-			FileOutputStream out = new FileOutputStream(new File(ConfigPath.getSettingsPath() + filename));
-			settings.store(out, "Benutzereinstellungen");
+			FileOutputStream out = new FileOutputStream(getSettingsFileName());
+			settings.store(out, "Settings for " + Config.getApplicationName());
 			out.close();
 		} catch (Exception e) {
 			Errorhandler.showError(e, "Einstellungen konnten nicht gespeichert werden!");

@@ -17,29 +17,6 @@ import butti.javalibs.gui.messagebox.Messagebox;
  */
 public class OpenFileBrowser {
 	/**
-	 * The OS
-	 */
-	public static enum OS {
-		WINDOWS, LINUX, MAC, OTHER
-	}
-
-	/**
-	 * 
-	 * @return The running OS
-	 */
-	public static OS getOs() {
-		if (System.getProperty("os.name").toLowerCase().indexOf("windows") > -1) {
-			return OS.WINDOWS;
-		} else if (System.getProperty("os.name").toLowerCase().indexOf("linux") > -1) {
-			return OS.LINUX;
-		} else if (System.getProperty("os.name").toLowerCase().indexOf("mac") > -1) {
-			return OS.MAC;
-		}
-
-		return OS.OTHER;
-	}
-
-	/**
 	 * Führt ein Programm aus
 	 * 
 	 * @param exec
@@ -70,13 +47,13 @@ public class OpenFileBrowser {
 	 */
 	public static void openPath(String path) {
 		File file = new File(path);
-		
+
 		path = file.getAbsolutePath();
 
 		System.out.println("Open Path: " + path);
 
 		try {
-			switch (getOs()) {
+			switch (OS.getOs()) {
 			case WINDOWS:
 				path = StringUtil.replace(path, "/", "\\");
 				path = path.substring(0, 2) + StringUtil.replace(path.substring(2), "\\\\", "\\");
@@ -115,7 +92,7 @@ public class OpenFileBrowser {
 	 *            The commands to run
 	 */
 	public static void runProcessAsync(String[] commands) {
-		switch (getOs()) {
+		switch (OS.getOs()) {
 		case WINDOWS: {
 			StringBuffer cmd = new StringBuffer("cmd /c \"" + commands[0]);
 			boolean first = true;

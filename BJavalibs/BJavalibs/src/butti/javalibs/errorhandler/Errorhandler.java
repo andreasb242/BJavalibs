@@ -1,6 +1,5 @@
 package butti.javalibs.errorhandler;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,47 +9,56 @@ import java.util.Date;
 
 import javax.swing.SwingUtilities;
 
+import butti.javalibs.config.Config;
 import butti.javalibs.config.ConfigPath;
 import butti.javalibs.gui.messagebox.Messagebox;
 import butti.javalibs.util.OpenFileBrowser;
 
-
-
 /**
- * Zeigt dem User einen unerwarteten Error an.
+ * Shows the user an unxpected error
  * 
  * @author Andreas Butti
  */
 public class Errorhandler {
 	/**
-	 * Unser logfile
+	 * The logfile
 	 */
 	private static OutputStreamWriter logFile;
 
 	/**
-	 * Name des Logfiles
+	 * The loghandler is initialized
+	 */
+	private static boolean initialized = false;
+
+	/**
+	 * The name oof the logfile
 	 */
 	private static String logfilename;
 
 	/**
-	 * Logfile öffnen
+	 * Open logfile
 	 */
-	static {
+	private static void initErrorhandler() {
+		if(initialized) {
+			return;
+		}
+		initialized = true;
+		
 		Date dt = new Date();
 		// Festlegung des Formats:
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 		String errorpath = ConfigPath.getErrorLogPath();
-		
-		if(errorpath == null) {
-			Errorhandler.showError(new NullPointerException("errorpath == null"), "errorlogPath in config/config.properties ist nicht gesetzt!");
+
+		if (errorpath == null) {
+			Errorhandler.showError(new NullPointerException("errorpath == null"), "errorlogPath in " + Config.getConfigFile() + " ist nicht gesetzt!");
 			System.exit(1);
 		}
-		
+
 		File folder = new File(errorpath);
 		if (folder.exists()) {
 			System.out.println("Folder \"" + ConfigPath.getErrorLogPath() + "\" exists");
-			if(!folder.isDirectory()) {
+			if (!folder.isDirectory()) {
 				System.out.println("Logfolder is not a folder!");
 			}
 		} else {
@@ -64,9 +72,9 @@ public class Errorhandler {
 
 		File outputFile = new File(ConfigPath.getErrorLogPath() + logfilename);
 		try {
-			if(!outputFile.exists()) {
+			if (!outputFile.exists()) {
 				System.out.println("create logfile: " + outputFile);
-				if(!outputFile.createNewFile()) {
+				if (!outputFile.createNewFile()) {
 					System.out.println("could not create logfile: " + outputFile);
 				}
 			}
@@ -88,6 +96,7 @@ public class Errorhandler {
 	 *            Der Text der geloggt werden soll
 	 */
 	public static synchronized void log(String log) {
+		initErrorhandler();
 		try {
 			if (logFile != null) {
 				logFile.write(log);
