@@ -14,7 +14,7 @@ public class Config {
 	private static String applicationName;
 	private static String configFile;
 
-	public static void initConifg(String applicationName) throws IOException {
+	public static void initConfig(String applicationName) throws IOException {
 		initConifg(applicationName, "config/config.properties");
 	}
 
