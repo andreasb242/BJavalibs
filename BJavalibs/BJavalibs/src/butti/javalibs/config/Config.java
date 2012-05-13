@@ -12,19 +12,21 @@ import java.util.Properties;
 public class Config {
 	private static Properties config = new Properties();
 	private static String applicationName;
+	private static String applicationPath;
 	private static String configFile;
 
-	public static void initConfig(String applicationName) throws IOException {
-		initConifg(applicationName, "config/config.properties");
+	public static void initConfig(String applicationName, String applicationPath) throws IOException {
+		initConifg(applicationName, applicationPath, "config/config.properties");
 	}
 
-	public static void initConifg(String applicationName, String configFile) throws IOException {
+	public static void initConifg(String applicationName, String applicationPath, String configFile) throws IOException {
 		if (Config.applicationName != null) {
 			throw new RuntimeException("Configuration already initialized!");
 		}
 
 		Config.applicationName = applicationName;
 		Config.configFile = configFile;
+		Config.applicationPath = applicationPath;
 
 		if (applicationName == null) {
 			throw new NullPointerException("applicationName == null");
@@ -43,6 +45,14 @@ public class Config {
 		return applicationName;
 	}
 
+	public static String getApplicationPath() {
+		if (applicationPath == null) {
+			throw new RuntimeException("Configuration not initialized, call initConifg first");
+		}
+
+		return applicationPath;
+	}
+	
 	public static String getConfigFile() {
 		if (applicationName == null) {
 			throw new RuntimeException("Configuration not initialized, call initConifg first");

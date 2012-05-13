@@ -21,13 +21,13 @@ public class ConfigPath {
 		String home = System.getProperty("user.home");
 
 		if (OS.getOs() == OS.LINUX) {
-			return home + "/.config/" + Config.getApplicationName();
+			return home + "/.config/" + Config.getApplicationPath();
 		}
 		if (OS.getOs() == OS.WINDOWS) {
-			return System.getenv("APPDATA") + File.separator + Config.getApplicationName();
+			return System.getenv("APPDATA") + File.separator + Config.getApplicationPath();
 		}
 		if (OS.getOs() == OS.MAC) {
-			return home + "/Library/" + Config.getApplicationName();
+			return home + "/Library/" + Config.getApplicationPath();
 		}
 
 		return home;
