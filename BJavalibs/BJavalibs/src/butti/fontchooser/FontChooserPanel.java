@@ -68,7 +68,7 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	 *            the initial font to display.
 	 */
 	public FontChooserPanel(Font font) {
-		gbm = new GridBagManager(this, true);
+		gbm = new GridBagManager(this);
 
 		JPanel pFont = new JPanel();
 		pFont.setBorder(new TitledBorder("Schrift"));
