@@ -8,9 +8,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
+
+import butti.javalibs.gui.messagebox.Messagebox;
 
 /**
  * ExcelAdapter enables Copy Clipboard functionality on JTables. The clipboard
@@ -64,7 +65,7 @@ public class JTableCopyAdapter implements ActionListener {
 
 		if (!((numrows - 1 == rowsselected[rowsselected.length - 1] - rowsselected[0] && numrows == rowsselected.length) && (numcols - 1 == colsselected[colsselected.length - 1]
 				- colsselected[0] && numcols == colsselected.length))) {
-			JOptionPane.showMessageDialog(null, "Invalid Copy Selection", "Invalid Copy Selection", JOptionPane.ERROR_MESSAGE);
+			Messagebox.showError(null, "Invalid Copy Selection", "Invalid Copy Selection");
 			return;
 		}
 
