@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -60,7 +61,15 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	 */
 	private Font font;
 
+	/**
+	 * The Panel with the preview component
+	 */
 	private JPanel pPreview;
+
+	/**
+	 * The font-change-listeners
+	 */
+	private Vector<ActionListener> listener = new Vector<ActionListener>();
 
 	/**
 	 * Standard constructor - builds a FontChooserPanel initialised with the
@@ -142,6 +151,10 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	private void updateFont() {
 		this.font = new Font(getSelectedName(), getSelectedStyle(), getSelectedSize());
 		this.preview.setFont(this.font);
+
+		for (ActionListener l : this.listener) {
+			l.actionPerformed(null);
+		}
 	}
 
 	/**
@@ -215,4 +228,11 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 		this.cbFonts.setSelectedItem(font.getName());
 	}
 
+	public void addActionListener(ActionListener l) {
+		listener.add(l);
+	}
+
+	public void removeActionListener(ActionListener l) {
+		listener.remove(l);
+	}
 }
