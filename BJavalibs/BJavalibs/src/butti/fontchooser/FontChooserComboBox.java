@@ -78,6 +78,7 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 
 		// set editor and item components
 		this.setEditable(true);
+		
 		this.setEditor(new FontChooserComboBoxEditor());
 		this.setRenderer(new FontChooserComboBoxRenderer());
 
@@ -134,8 +135,9 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 			recentFontNames.removeLast();
 			listChanged = true;
 		}
-		if (listChanged)
+		if (listChanged) {
 			updateList(getSelectedFontName());
+		}
 	}
 
 	public void itemStateChanged(ItemEvent e) {
@@ -147,8 +149,9 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 			// add at first position
 			recentFontNames.addFirst(fontName);
 			// trim list
-			if (recentFontNames.size() > recentFontsCount)
+			if (recentFontNames.size() > recentFontsCount) {
 				recentFontNames.removeLast();
+			}
 			updateList(fontName);
 		}
 	}
@@ -174,18 +177,20 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 			itemsCache.put(fontName, item);
 		}
 		// reselect item
-		if (selectedFontName != null)
+		if (selectedFontName != null) {
 			setSelectedItem(selectedFontName);
+		}
 	}
 
 	/**
 	 * Gets the selected font name, or null.
 	 */
 	public String getSelectedFontName() {
-		if (this.getSelectedItem() != null)
+		if (this.getSelectedItem() != null) {
 			return ((Item) this.getSelectedItem()).font.getFontName();
-		else
+		} else {
 			return null;
+		}
 	}
 
 	@Override
@@ -202,10 +207,12 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 		// if a string is given, find the corresponding font, otherwise do
 		// nothing
 		Item item = recentItemsCache.get(fontName); // first in recent items
-		if (item == null)
+		if (item == null) {
 			item = itemsCache.get(fontName); // then in regular items
-		if (item != null)
+		}
+		if (item != null) {
 			setSelectedItem(item);
+		}
 	}
 
 	/**
@@ -277,8 +284,13 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 
 		private FontChooserComboBoxEditor() {
 			editor.setDocument(new AutoCompletionDocument());
-			if (fontNames.size() > 0)
+			
+			// Needed to draw corretly on Synth Look & Feel
+            editor.setName("ComboBox.textField");
+			
+			if (fontNames.size() > 0) {
 				editor.setText(fontNames.get(0).toString());
+			}
 		}
 
 		private String getMatch(String input) {
@@ -354,8 +366,9 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 					StringBuilder thisPreview = new StringBuilder();
 					for (int i = 0; i < previewString.length(); i++) {
 						char c = previewString.charAt(i);
-						if (font.canDisplay(c))
+						if (font.canDisplay(c)) {
 							thisPreview.append(c);
+						}
 					}
 					JLabel labelFont = new JLabel(thisPreview.toString());
 					labelFont.setFont(font);
@@ -370,10 +383,11 @@ public class FontChooserComboBox extends JComboBox implements ItemListener {
 
 		@Override
 		public String toString() {
-			if (font != null)
+			if (font != null) {
 				return font.getFamily();
-			else
+			} else {
 				return "";
+			}
 		}
 
 	}

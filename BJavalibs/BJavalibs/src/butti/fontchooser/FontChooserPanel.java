@@ -48,7 +48,7 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	/**
 	 * The label with the example Text
 	 */
-	private FontPreview lbPreview = new FontPreview();
+	private FontPreview preview = new FontPreview();
 
 	/**
 	 * Layout manager
@@ -59,6 +59,8 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	 * The current font
 	 */
 	private Font font;
+
+	private JPanel pPreview;
 
 	/**
 	 * Standard constructor - builds a FontChooserPanel initialised with the
@@ -105,9 +107,9 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 		this.cbBold.addActionListener(this);
 		this.cbItalic.addActionListener(this);
 
-		JPanel pPreview = new JPanel();
+		this.pPreview = new JPanel();
 		pPreview.setBorder(new TitledBorder("Vorschau"));
-		pPreview.add(lbPreview);
+		pPreview.add(preview);
 
 		gbm.setX(0).setY(0).setComp(pFont);
 		gbm.setX(1).setY(0).setComp(pSize);
@@ -126,12 +128,20 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 		updateFont();
 	}
 
+	public void setPreviewVisible(boolean visible) {
+		this.pPreview.setVisible(visible);
+	}
+
+	public boolean isPreviewVisible() {
+		return this.pPreview.isVisible();
+	}
+
 	/**
 	 * Updates the preview and <code>this.font</code>
 	 */
 	private void updateFont() {
 		this.font = new Font(getSelectedName(), getSelectedStyle(), getSelectedSize());
-		this.lbPreview.setFont(this.font);
+		this.preview.setFont(this.font);
 	}
 
 	/**
