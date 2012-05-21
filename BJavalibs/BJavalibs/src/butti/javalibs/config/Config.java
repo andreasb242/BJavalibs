@@ -1,5 +1,6 @@
 package butti.javalibs.config;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -52,7 +53,7 @@ public class Config {
 
 		return applicationPath;
 	}
-	
+
 	public static String getConfigFile() {
 		if (applicationName == null) {
 			throw new RuntimeException("Configuration not initialized, call initConifg first");
@@ -67,6 +68,32 @@ public class Config {
 		}
 
 		return config.getProperty(key);
+	}
+
+	public static int get(String key, int defaultValue) {
+		String v = get(key);
+		try {
+			return Integer.parseInt(v);
+		} catch (Exception e) {
+		}
+
+		return defaultValue;
+	}
+
+	public static Color get(String key, Color defaultValue) {
+		String value = get(key);
+
+		try {
+			if (!value.startsWith("#")) {
+				return defaultValue;
+			}
+
+			return new Color(Integer.parseInt(value.substring(1), 16));
+
+		} catch (Exception e) {
+		}
+
+		return defaultValue;
 	}
 
 	public static String[] getArray(String key) {
