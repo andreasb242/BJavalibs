@@ -33,7 +33,7 @@
 
 
 		<!-- Build the jar file -->
-		<jar basedir="${build}" destfile="${build}/B-Lib.jar" />
+		<jar basedir="${build}" destfile="../../../Simulation/ExternLibraries/lib/B-Lib.jar" />
 
 	</target>
 </project>
