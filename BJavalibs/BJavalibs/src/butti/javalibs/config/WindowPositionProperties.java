@@ -8,26 +8,24 @@ import javax.swing.JFrame;
 public class WindowPositionProperties extends Properties {
 	private static final long serialVersionUID = 1L;
 
-	public void applay(Window window) {
-		int x, y, width, height;
+	public boolean applay(Window window) {
+		try {
+			int x = Integer.parseInt(getProperty("x"));
+			int y = Integer.parseInt(getProperty("y"));
+			int width = Integer.parseInt(getProperty("width"));
+			int height = Integer.parseInt(getProperty("height"));
 
-		x = window.getLocation().x;
-		y = window.getLocation().y;
-		width = window.getWidth();
-		height = window.getHeight();
-
-		x = Integer.parseInt(getProperty("x", "" + x));
-		y = Integer.parseInt(getProperty("y", "" + y));
-		width = Integer.parseInt(getProperty("width", "" + width));
-		height = Integer.parseInt(getProperty("height", "" + height));
-
-		window.setLocation(x, y);
-		window.setSize(width, height);
-		if (window instanceof JFrame) {
-			if (Boolean.parseBoolean(getProperty("maximized"))) {
-				((JFrame) window).setExtendedState(((JFrame) window).getExtendedState() | JFrame.MAXIMIZED_BOTH);
+			window.setLocation(x, y);
+			window.setSize(width, height);
+			if (window instanceof JFrame) {
+				if (Boolean.parseBoolean(getProperty("maximized"))) {
+					((JFrame) window).setExtendedState(((JFrame) window).getExtendedState() | JFrame.MAXIMIZED_BOTH);
+				}
 			}
+		} catch (Exception e) {
+			return false;
 		}
+		return true;
 	}
 
 	public void readWindowPos(Window window) {

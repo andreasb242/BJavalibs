@@ -19,12 +19,28 @@ public class WindowPositionSaver {
 		this(window, null);
 	}
 
+	public WindowPositionSaver(Window window, int defaultWidth, int defaultHeight) {
+		this(window, null, defaultWidth, defaultHeight);
+	}
+
 	public WindowPositionSaver(Window window, AdditionalWindowPositions add) {
+		this(window, add, -1, -1);
+	}
+
+	public WindowPositionSaver(Window window, AdditionalWindowPositions add, int defaultWidth, int defaultHeight) {
 		this.window = window;
 		this.name = window.getClass().getName();
 		this.add = add;
 
-		load();
+		if (!load()) {
+			if (defaultWidth > 0 && defaultHeight > 0) {
+				window.setSize(defaultWidth, defaultHeight);
+			} else {
+				window.pack();
+			}
+
+			window.setLocationRelativeTo(window.getOwner());
+		}
 
 		window.addWindowListener(new WindowAdapter() {
 
@@ -40,25 +56,29 @@ public class WindowPositionSaver {
 		return new File(ConfigPath.getSettingsPath() + name + ".windowPos");
 	}
 
-	public void load() {
+	public boolean load() {
 		try {
 			File f = getFile();
 
 			if (!f.exists()) {
-				return;
+				return false;
 			}
 
 			WindowPositionProperties p = new WindowPositionProperties();
 			p.load(new FileInputStream(f));
 
-			p.applay(window);
+			if (!p.applay(window)) {
+				return false;
+			}
 
 			if (add != null) {
 				add.load(p);
 			}
 		} catch (Exception e) {
 			Errorhandler.showError(e, "Fensterposition für das Fenster \"" + window.getName() + "\" vom Typ \"" + name + "\" konnte nicht geladen werden!");
+			return false;
 		}
+		return true;
 	}
 
 	public void save() {
