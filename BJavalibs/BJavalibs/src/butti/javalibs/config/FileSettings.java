@@ -139,4 +139,9 @@ public class FileSettings implements Settings {
 		}
 		return keys.toArray(new String[] {});
 	}
+
+	@Override
+	public void removeSetting(String key) {
+		settings.remove(key);
+	}
 }

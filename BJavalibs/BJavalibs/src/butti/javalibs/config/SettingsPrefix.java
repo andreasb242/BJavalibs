@@ -87,4 +87,9 @@ public class SettingsPrefix implements Settings {
 		return keys;
 	}
 
+	@Override
+	public void removeSetting(String key) {
+		settings.removeSetting(prefix + key);
+	}
+
 }

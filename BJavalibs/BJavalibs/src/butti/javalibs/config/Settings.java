@@ -88,4 +88,12 @@ public interface Settings {
 	 */
 	public abstract String[] getKeysStartingWith(String prefix);
 
+	/**
+	 * Delte a settings entry
+	 * 
+	 * @param key
+	 *            The key to be remove
+	 */
+	public abstract void removeSetting(String key);
+
 }
