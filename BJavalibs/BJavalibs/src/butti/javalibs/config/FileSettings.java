@@ -143,5 +143,6 @@ public class FileSettings implements Settings {
 	@Override
 	public void removeSetting(String key) {
 		settings.remove(key);
+		save();
 	}
 }

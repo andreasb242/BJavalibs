@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
  * Verwaltet das <code>GridBagLayout</code> eines Frames
  * 
  * @author Andreas Butti
+ * @version 1.8.1, 01.06.2012: Catches <code>null</code> component
  * @version 1.8, 26.12.07
  * 
  */
@@ -355,6 +356,10 @@ public class GridBagManager {
 	 * @return <code>Component</code> der geaddet wurde
 	 */
 	public Component setComp(Component component) {
+		if(component == null) {
+			throw new NullPointerException("component == null");
+		}
+		
 		if (scrollPanel) {
 			JScrollPane pane = new JScrollPane(component);
 			gbl.setConstraints(pane, c);
@@ -366,8 +371,9 @@ public class GridBagManager {
 		}
 		// Erst am Schluss setzen, damit ggf. die Grösse des JScrollPane gesetzt
 		// wird
-		if (dim != null)
+		if (dim != null) {
 			component.setPreferredSize(dim);
+		}
 
 		addDebugItem(component);
 		reset();
