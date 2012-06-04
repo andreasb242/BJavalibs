@@ -123,6 +123,15 @@ public class FileSettings implements Settings {
 	}
 
 	@Override
+	public boolean getSetting(String name, boolean defaultValue) {
+		try {
+			return Boolean.valueOf(settings.getProperty(name));
+		} catch (Exception e) {
+		}
+		return defaultValue;
+	}
+
+	@Override
 	public String getSetting(String name) {
 		return getSetting(name, null);
 	}
