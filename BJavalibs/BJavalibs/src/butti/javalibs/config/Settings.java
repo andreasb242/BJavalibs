@@ -76,17 +76,6 @@ public interface Settings {
 
 	/**
 	 * Gibt eine Einstellung zurück
-	 *
-	 * @param name
-	 *            Der name der Einstellung
-	 * @param defaultValue
-	 *            Der Defaultwert
-	 * @return Der Wert der Einstellung
-	 */
-	public boolean getSetting(String name, boolean defaultValue);
-
-	/**
-	 * Gibt eine Einstellung zurück
 	 * 
 	 * @param name
 	 *            Der name der Einstellung

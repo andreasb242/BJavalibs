@@ -70,11 +70,6 @@ public class SettingsPrefix implements Settings {
 	}
 
 	@Override
-	public boolean getSetting(String name, boolean defaultValue) {
-		return settings.getSetting(prefix + name, defaultValue);
-	}
-
-	@Override
 	public String getSetting(String name) {
 		return settings.getSetting(prefix + name);
 	}
