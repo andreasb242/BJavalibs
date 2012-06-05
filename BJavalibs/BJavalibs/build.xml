@@ -1,3 +1,8 @@
+<!--
+
+BJavalibs Buildfile
+
+-->
 <project name="BJavalibs" basedir="." default="jar">
 	<property name="build" value="build" />
 	<property file="build.properties" />
@@ -33,7 +38,7 @@
 
 
 		<!-- Build the jar file -->
-		<jar basedir="${build}" destfile="../../../Simulation/ExternLibraries/lib/B-Lib.jar" />
+		<jar basedir="${build}" destfile="B-Lib.jar" />
 
 	</target>
 </project>
