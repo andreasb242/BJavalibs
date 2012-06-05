@@ -1,4 +1,4 @@
-package butti.javalibs.util;
+package butti.javalibs.clipboard;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -21,7 +21,6 @@ import butti.javalibs.gui.messagebox.Messagebox;
  */
 public class JTableCopyAdapter implements ActionListener {
 	private Clipboard system;
-	private StringSelection stsel;
 	private JTable table;
 
 	/**
@@ -88,7 +87,7 @@ public class JTableCopyAdapter implements ActionListener {
 			}
 			sbf.append("\n");
 		}
-		stsel = new StringSelection(sbf.toString());
+		StringSelection stsel = new StringSelection(sbf.toString());
 		system.setContents(stsel, stsel);
 	}
 }
