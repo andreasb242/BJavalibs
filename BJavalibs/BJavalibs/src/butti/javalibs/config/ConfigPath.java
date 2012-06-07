@@ -15,7 +15,7 @@ public class ConfigPath {
 
 	public static String getWriteablePathPrefix() {
 		if (Boolean.valueOf(Config.get("portable")) == true) {
-			return ""; // relative Path
+			return "."; // relative Path
 		}
 
 		String home = System.getProperty("user.home");
