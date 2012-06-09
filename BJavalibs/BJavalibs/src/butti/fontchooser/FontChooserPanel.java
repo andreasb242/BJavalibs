@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.Vector;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import butti.javalibs.gui.GridBagManager;
+import butti.javalibs.listener.ListenerList;
 
 /**
  * @author Andreas Butti, based on JCommons FontChooser
@@ -69,7 +69,7 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	/**
 	 * The font-change-listeners
 	 */
-	private Vector<ActionListener> listener = new Vector<ActionListener>();
+	private ListenerList listener = new ListenerList();
 
 	/**
 	 * Standard constructor - builds a FontChooserPanel initialised with the
@@ -152,9 +152,7 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 		this.font = new Font(getSelectedName(), getSelectedStyle(), getSelectedSize());
 		this.preview.setFont(this.font);
 
-		for (ActionListener l : this.listener) {
-			l.actionPerformed(null);
-		}
+		this.listener.actionPerformed(null);
 	}
 
 	/**
@@ -229,10 +227,10 @@ public class FontChooserPanel extends JPanel implements ActionListener {
 	}
 
 	public void addActionListener(ActionListener l) {
-		listener.add(l);
+		listener.addListener(l);
 	}
 
 	public void removeActionListener(ActionListener l) {
-		listener.remove(l);
+		listener.removeListener(l);
 	}
 }
