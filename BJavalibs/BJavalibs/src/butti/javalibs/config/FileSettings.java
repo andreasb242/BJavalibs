@@ -26,6 +26,13 @@ public class FileSettings implements Settings {
 	private final String filename;
 
 	/**
+	 * Transaction running, do not save
+	 * 
+	 * This is because of performance reasons
+	 */
+	private boolean transaction = false;
+
+	/**
 	 * Ctor
 	 * 
 	 * @param filename
@@ -65,6 +72,10 @@ public class FileSettings implements Settings {
 	 * Save the settings to a file
 	 */
 	private void save() {
+		if (transaction) {
+			return;
+		}
+
 		try {
 			FileOutputStream out = new FileOutputStream(getSettingsFileName());
 			settings.store(out, "Settings for " + Config.getApplicationName());
@@ -143,6 +154,17 @@ public class FileSettings implements Settings {
 	@Override
 	public void removeSetting(String key) {
 		settings.remove(key);
+		save();
+	}
+
+	@Override
+	public void startTransaction() {
+		transaction = true;
+	}
+
+	@Override
+	public void finishTransaction() {
+		transaction = false;
 		save();
 	}
 }

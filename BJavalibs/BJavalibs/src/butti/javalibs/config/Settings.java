@@ -96,4 +96,14 @@ public interface Settings {
 	 */
 	public abstract void removeSetting(String key);
 
+	/**
+	 * Within a transaction is nothing saved, all data will be saved in the
+	 * "finishTransaction" call
+	 * 
+	 * Else the file is saved on each setXXX
+	 */
+	public abstract void startTransaction();
+
+	public abstract void finishTransaction();
+
 }

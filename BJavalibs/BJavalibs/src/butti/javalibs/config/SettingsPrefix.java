@@ -92,4 +92,14 @@ public class SettingsPrefix implements Settings {
 		settings.removeSetting(prefix + key);
 	}
 
+	@Override
+	public void startTransaction() {
+		settings.startTransaction();
+	}
+
+	@Override
+	public void finishTransaction() {
+		settings.finishTransaction();
+	}
+
 }
