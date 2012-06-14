@@ -70,6 +70,17 @@ public class Config {
 		return config.getProperty(key);
 	}
 
+	public static boolean is(String key, boolean defaultValue) {
+		String v = get(key);
+		if ("true".equalsIgnoreCase(v)) {
+			return true;
+		} else if ("false".equalsIgnoreCase(v)) {
+			return false;
+		}
+
+		return defaultValue;
+	}
+
 	public static int get(String key, int defaultValue) {
 		String v = get(key);
 		try {
