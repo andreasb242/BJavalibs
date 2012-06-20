@@ -39,11 +39,11 @@ public class Errorhandler {
 	 * Open logfile
 	 */
 	private static void initErrorhandler() {
-		if(initialized) {
+		if (initialized) {
 			return;
 		}
 		initialized = true;
-		
+
 		Date dt = new Date();
 		// Festlegung des Formats:
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
@@ -217,8 +217,10 @@ public class Errorhandler {
 	public static void logError(String message) {
 		Date dt = new Date();
 		// Festlegung des Formats:
-		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss.S");
-		log("->" + df.format(dt) + "\n");
+		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+
+		log("->" + df.format(dt) + "; Java: " + System.getProperty("java.version") + System.getProperty("java.vendor") + "; OS="
+				+ System.getProperty("os.name") + "(" + System.getProperty("os.arch") + ") V. " + System.getProperty("os.version") + "\n");
 		log(message);
 	}
 
