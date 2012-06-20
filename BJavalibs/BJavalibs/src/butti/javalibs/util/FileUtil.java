@@ -44,6 +44,26 @@ public class FileUtil {
 		return content.toString();
 	}
 
+	public static String fileGetContents(InputStream in) {
+		StringBuffer content = new StringBuffer();
+
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				content.append(line);
+				content.append("\n");
+			}
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return content.toString();
+	}
+
 	public static boolean isDateFileInRange(String path, int seconds) {
 		String date = FileUtil.fileGetContents(path);
 
