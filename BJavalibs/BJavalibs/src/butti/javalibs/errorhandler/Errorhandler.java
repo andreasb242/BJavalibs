@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.swing.SwingUtilities;
 
@@ -34,6 +35,11 @@ public class Errorhandler {
 	 * The name oof the logfile
 	 */
 	private static String logfilename;
+
+	/**
+	 * The count of current displaying messageboxes
+	 */
+	private static AtomicInteger msgboxCount = new AtomicInteger();
 
 	/**
 	 * Open logfile
@@ -149,9 +155,17 @@ public class Errorhandler {
 
 				msg.addButton("Logfile öffnen", 1, true);
 
+				int v = msgboxCount.incrementAndGet();
+				if (v > 5) {
+					// kill, there is a loop!
+					System.exit(-150);
+				}
+
 				if (msg.display() == 1) {
 					OpenFileBrowser.openPath(ConfigPath.getErrorLogPath());
 				}
+
+				msgboxCount.decrementAndGet();
 			}
 
 		});
