@@ -8,13 +8,15 @@ import javax.swing.JFrame;
 public class WindowPositionProperties extends Properties {
 	private static final long serialVersionUID = 1L;
 
-	public boolean applay(Window window) {
+	public boolean apply(Window window) {
 		try {
 			int x = Integer.parseInt(getProperty("x"));
 			int y = Integer.parseInt(getProperty("y"));
 			int width = Integer.parseInt(getProperty("width"));
 			int height = Integer.parseInt(getProperty("height"));
 
+			System.out.println("width="+ width);
+			
 			window.setLocation(x, y);
 			window.setSize(width, height);
 			if (window instanceof JFrame) {

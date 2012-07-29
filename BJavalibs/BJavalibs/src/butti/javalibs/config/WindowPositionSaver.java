@@ -67,7 +67,7 @@ public class WindowPositionSaver {
 			WindowPositionProperties p = new WindowPositionProperties();
 			p.load(new FileInputStream(f));
 
-			if (!p.applay(window)) {
+			if (!p.apply(window)) {
 				return false;
 			}
 
