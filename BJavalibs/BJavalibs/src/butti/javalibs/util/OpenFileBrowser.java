@@ -76,6 +76,9 @@ public class OpenFileBrowser {
 					return;
 				}
 				break;
+
+			default:
+				break;
 			}
 
 			Messagebox.showWarning(null, "Ordner öffnen", "Der Pfad \"" + path + "\" konnte nicht geöffnet werden.");
@@ -133,6 +136,9 @@ public class OpenFileBrowser {
 				e.printStackTrace();
 			}
 			return;
+
+		default:
+			break;
 		}
 	}
 }
